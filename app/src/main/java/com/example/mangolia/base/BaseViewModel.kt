@@ -1,4 +1,4 @@
-package com.example.common.base
+package com.example.mangolia.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.example.demo.views.utils
+package com.example.mangolia.utils
 
 object Constants {
 

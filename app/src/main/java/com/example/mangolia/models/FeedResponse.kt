@@ -23,13 +23,14 @@ data class Curation(
 @Parcelize
 data class Packages(
     @Json(name = "packageType") val packageType: String?,
-    @Json(name = "items") val items: List<Items>?
+    @Json(name = "items") val items: List<Items>?,
+    @Json(name = "visibleItemIndex")var visibleItemIndex: Int = -1
 ): Parcelable
 
 @Parcelize
 data class Items(
     @Json(name = "contentType") val contentType: String?,
-    @Json(name = "source") val source: Source?
+    @Json(name = "source") val source: Source?,
 ): Parcelable
 
 

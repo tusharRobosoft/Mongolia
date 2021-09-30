@@ -3,7 +3,7 @@ package com.example.mangolia.vewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.common.base.BaseViewModel
+import com.example.mangolia.base.BaseViewModel
 import com.example.mangolia.models.Root
 import com.example.mangolia.repository.MainRepo
 import kotlinx.coroutines.launch

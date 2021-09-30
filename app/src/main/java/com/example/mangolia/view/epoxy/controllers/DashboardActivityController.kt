@@ -1,14 +1,18 @@
 package com.example.mangolia.view.epoxy.controllers
 
-import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.VisibilityState
+import com.airbnb.epoxy.carousel
 import com.bumptech.glide.Glide
 import com.example.mangolia.R
 import com.example.mangolia.databinding.DataClassItemBinding
 import com.example.mangolia.databinding.DataClassItemCarousalBinding
 import com.example.mangolia.models.Items
+import com.example.mangolia.models.Packages
 import com.example.mangolia.view.epoxy.helper.ViewBindingKotlinModel
 import com.example.mangolia.view.epoxy.models.LoadingEpoxyModel
+import com.example.mangolia.view.epoxy.models.TabLayoutModel_
+import com.example.mangolia.view.epoxy.models.ViewPagerItem_
 
 class DashboardActivityController() : EpoxyController() {
     var isLoading: Boolean = false
@@ -18,12 +22,13 @@ class DashboardActivityController() : EpoxyController() {
                 requestModelBuild()
         }
 
-    var itemList = ArrayList<Items>()
+    var packageList = ArrayList<Packages>()
         set(value) {
             field = value
             isLoading = false
             requestModelBuild()
         }
+
 
 
     override fun buildModels() {
@@ -32,22 +37,40 @@ class DashboardActivityController() : EpoxyController() {
             return
         }
 
-        if(itemList.isEmpty()){
+        if(packageList.isEmpty()){
             //TODO show is empty screen
             return
         }
 
-        val items = itemList.map {
-            ItemCarousalModel(it).id(it.source?.id)
-        }
+        val temp = packageList
 
-        CarouselModel_()
-            .id("carousal")
-            .models(items)
+
+        carousel {
+            id("This is a ViewPager.")
+            models(temp[0].items?.mapIndexed{ index, item ->
+                ViewPagerItem_()
+                    .id(item.source?.id)
+                    .title(item.source?.title)
+                    .description(item.source?.description)
+                    .url(item.source?.image?.url)
+                    .onVisibilityStateChanged { _, _, visibilityState ->
+                        if (visibilityState == VisibilityState.FOCUSED_VISIBLE) {
+                            temp[0].visibleItemIndex = index
+                            this@DashboardActivityController.requestModelBuild()
+                        }
+                    }
+
+            }!!)
+
+        }
+        TabLayoutModel_()
+            .id("This is the ViewPager's TabLayout.")
+            .count(temp[0].items!!.size)
+            .checked(temp[0].visibleItemIndex)
             .addTo(this)
 
 
-        itemList.forEach {
+        packageList[1].items?.forEach {
             ItemViewEpoxyModel(it)
                 .id(it.source?.id)
                 .addTo(this)
@@ -62,17 +85,5 @@ class DashboardActivityController() : EpoxyController() {
             Glide.with(title.context)
                 .load(item.source?.image?.url).into(ivImage);
         }
-    }
-
-    data class ItemCarousalModel(
-        val item: Items
-    ):ViewBindingKotlinModel<DataClassItemCarousalBinding>(R.layout.data_class_item_carousal){
-        override fun DataClassItemCarousalBinding.bind() {
-            title.text = item.source?.title
-            tvDesc.text = item.source?.description
-            Glide.with(title.context)
-                .load(item.source?.image?.url).into(ivImage);
-        }
-
     }
 }

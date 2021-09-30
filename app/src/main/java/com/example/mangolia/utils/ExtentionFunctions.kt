@@ -7,9 +7,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.example.demo.views.utils.Constants.CONNECT_TIMEOUT
-import com.example.demo.views.utils.Constants.READ_TIMEOUT
-import com.example.demo.views.utils.Constants.WRITE_TIMEOUT
+import com.example.mangolia.utils.Constants.CONNECT_TIMEOUT
+import com.example.mangolia.utils.Constants.READ_TIMEOUT
+import com.example.mangolia.utils.Constants.WRITE_TIMEOUT
 import com.example.mangolia.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

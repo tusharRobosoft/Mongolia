@@ -1,4 +1,4 @@
-package com.example.demo.views.utils
+package com.example.mangolia.utils
 
 import android.graphics.Rect
 import android.view.View
@@ -19,11 +19,9 @@ class ItemDecorator(
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        outRect.right = rightSpacing.toInt()
-        outRect.left = leftSpacing.toInt()
-        if (parent.getChildLayoutPosition(view) == 0) {
+        if (parent.getChildLayoutPosition(view) == 2) {
             outRect.top = topSpacing.toInt()
         }
-        outRect.bottom = bottomSpacing.toInt()
+
     }
 }

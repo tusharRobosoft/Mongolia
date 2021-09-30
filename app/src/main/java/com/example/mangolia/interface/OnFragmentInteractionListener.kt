@@ -1,4 +1,4 @@
-package com.divum.ibn.interfaces
+package com.example.mangolia.`interface`
 
 import android.os.Bundle
 import androidx.annotation.IdRes

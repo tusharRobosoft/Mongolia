@@ -1,16 +1,22 @@
 package com.example.mangolia.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.SnapHelper
+import com.airbnb.epoxy.Carousel
+import com.airbnb.epoxy.EpoxyVisibilityTracker
+import com.example.mangolia.utils.ItemDecorator
 import org.koin.android.ext.android.get
 import com.example.mangolia.databinding.FragmentMainBinding
-import com.example.mangolia.models.Items
+import com.example.mangolia.models.Packages
+import com.example.mangolia.utils.dpToPx
 import com.example.mangolia.vewmodel.DashBoardViewModel
 import com.example.mangolia.view.epoxy.controllers.DashboardActivityController
-import kotlinx.android.synthetic.main.fragment_main.*
 
 
 class MainFragment : Fragment() {
@@ -25,8 +31,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater,container,false)
+    ): View {        _binding = FragmentMainBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -38,10 +43,20 @@ class MainFragment : Fragment() {
         val epoxyController = DashboardActivityController()
 
         binding.epoxyRecyclerView.setController(epoxyController)
+        binding.epoxyRecyclerView.addItemDecoration(ItemDecorator(0f,0f,15f.dpToPx(requireContext()),0f))
+
+        // Attach visibility tracker to the RecyclerView to enable visibility events.
+        EpoxyVisibilityTracker().attach(binding.epoxyRecyclerView)
+        Carousel.setDefaultGlobalSnapHelperFactory(object : Carousel.SnapHelperFactory() {
+            override fun buildSnapHelper(context: Context?): SnapHelper {
+                return PagerSnapHelper()
+            }
+        })
+
         epoxyController.isLoading = true
         viewModel.getFeed()
         viewModel.dataFeed.observe(viewLifecycleOwner) {
-            epoxyController.itemList = it.data?.curation?.packages?.get(1)?.items as ArrayList<Items>
+            epoxyController.packageList = it.data?.curation?.packages as ArrayList<Packages>
 
         }
     }
